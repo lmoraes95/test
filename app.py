@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 import pyodbc
+import logging
 
 app = Flask(__name__)
 
@@ -16,15 +17,19 @@ def add_user():
     name = request.form.get('name')
     email = request.form.get('email')
 
-    # Connect to the database
-    conn = pyodbc.connect(conn_str)
-    cursor = conn.cursor()
+    try:
+        # Connect to the database
+        conn = pyodbc.connect(conn_str)
+        cursor = conn.cursor()
 
-    # Insert the user data into the database
-    cursor.execute("INSERT INTO users (name, email) VALUES (?,?)", (name, email))
-    conn.commit()
+        # Insert the user data into the database
+        cursor.execute("INSERT INTO users (name, email) VALUES (?,?)", (name, email))
+        conn.commit()
 
-    return 'User added successfully'
+        return 'User added successfully'
+    except Exception as e:
+        logging.error("Error in adding user: %s", str(e))
+        return 'Error in adding user: {}'.format(str(e))
 
 if __name__ == '__main__':
     app.run(debug=True)
