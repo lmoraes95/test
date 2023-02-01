@@ -16,6 +16,13 @@ def add_user():
     # Get the form data
     name = request.form.get('name')
     email = request.form.get('email')
+    clientID = request.form.get('clientID')
+    grantID = request.form.get('grantID')
+    siteID = request.form.get('siteID')
+    assessmentType = request.form.get('assessmentType')
+    firstServices = request.form.get('firstServices')
+    birthMonthYear = request.form.get('birthMonthYear')
+    assessmentInterview = request.form.get('assessmentInterview')
 
     try:
         # Connect to the database
@@ -23,7 +30,8 @@ def add_user():
         cursor = conn.cursor()
 
         # Insert the user data into the database
-        cursor.execute("INSERT INTO users (name, email) VALUES (?,?)", (name, email))
+        cursor.execute("INSERT INTO users (name, email, clientID, grantID, siteID, assessmentType, firstServices, birthMonthYear, assessmentInterview) VALUES (?,?,?,?,?,?,?,?,?)", 
+                       (name, email, clientID, grantID, siteID, assessmentType, firstServices, birthMonthYear, assessmentInterview))
         conn.commit()
 
         return 'User added successfully'
